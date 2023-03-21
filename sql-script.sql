@@ -119,3 +119,18 @@ SELECT role, COUNT(*)
 FROM users
 GROUP BY role;
 
+
+
+-- 
+SELECT *
+FROM users u
+WHERE u.username = 'bach_tran123' AND u.password = 'password123';
+
+
+SELECT *
+FROM reimbursements;
+
+UPDATE reimbursements 
+SET status = 'approved'
+WHERE id = 1;
+
