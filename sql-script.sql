@@ -43,7 +43,8 @@ VALUES
 INSERT INTO reimbursements (description, submitter)
 VALUES 
 ('Team building lunch', 'john_doe'),
-('AWS Certification reimbursement', 'bach_tran123');
+('AWS Certification reimbursement', 'bach_tran123'),
+('Business travel', 'john_doe');
 
 -- Example of a violation of "referential integrity"
 -- We are trying to reference a username (primary key of users)
@@ -133,4 +134,65 @@ FROM reimbursements;
 UPDATE reimbursements 
 SET status = 'approved'
 WHERE id = 1;
+
+DELETE 
+FROM reimbursements
+WHERE id = 1;
+
+--
+-- JOINS
+SELECT *
+FROM users u
+INNER JOIN reimbursements r 
+ON u.username = r.submitter;
+
+-- WRite a query that displays the user who reimbursement id 2
+-- belongs to
+SELECT u.*
+FROM users u
+INNER JOIN reimbursements r
+ON u.username = r.submitter
+WHERE r.id = 2;
+
+-- Write a query that displays the user who reimbursement id 1
+-- belongs to
+SELECT u.*
+FROM users u
+INNER JOIN reimbursements r
+ON u.username = r.submitter
+WHERE r.id = 1;
+
+-- INNER, LEFT, RIGHT, OUTER (FULL OUTER)
+
+-- INNER JOIN: a join that retains only the matches between
+-- both the left table and the right table
+
+-- LEFT JOIN: a join that retains the matches between both the
+-- left table and the right table, but also retains 
+-- records in the left table that don't have a match with the
+-- right table
+SELECT *
+FROM users u
+LEFT JOIN reimbursements r 
+ON u.username = r.submitter;
+
+-- RIGHT JOIN is the same as a left join, but flipped around
+SELECT *
+FROM reimbursements r -- Flipped reimbursements to be the "left"
+-- table and users to be the right table
+RIGHT JOIN users u
+ON u.username = r.submitter;
+
+-- OUTER JOIN: a join that retains the matches between both tables
+-- but also retains records in both the left and right table 
+-- that don't have matches with the other table
+
+-- DBeaver is NOT the database
+-- It is a program to connect to the database
+-- JDBC does not connect to DBeaver
+-- JDBC is analagous with DBeaver
+-- They are the "same" thing
+-- JDBC connects to the database
+-- DBeaver also connects to the database
+
 
