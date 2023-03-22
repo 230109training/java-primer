@@ -1,6 +1,7 @@
 package com.revature;
 
 import com.revature.controllers.AuthController;
+import com.revature.controllers.ReimbursementController;
 import com.revature.dto.MessageDTO;
 import com.revature.exceptions.InvalidParameterException;
 import com.revature.model.User;
@@ -22,6 +23,9 @@ public class Application {
 
         AuthController authController = new AuthController();
         authController.registerEndpoints(app);
+
+        ReimbursementController reimbController = new ReimbursementController();
+        reimbController.registerEndpoints(app);
 
         app.start(8080);
     }

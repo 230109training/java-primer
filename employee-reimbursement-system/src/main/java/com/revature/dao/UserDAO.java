@@ -52,4 +52,32 @@ public class UserDAO {
         }
     }
 
+    public User getUserByUsernameAndPassword(String username, String password) throws SQLException {
+        Connection con = ConnectionUtility.getConnection();
+
+        // Avoids SQL injection
+        PreparedStatement pstmt = con.prepareStatement("SELECT * FROM users u WHERE u.username = ? AND u.password = ?");
+        pstmt.setString(1, username);
+        pstmt.setString(2, password);
+
+        ResultSet rs = pstmt.executeQuery();
+        // Here we don't need to use a while loop to iterate through the ResultSet
+        // Because we only expect to get 0 or 1 results from the given query
+        if (rs.next()) { // we have 1 result
+            String un = rs.getString("username");
+            String pw = rs.getString("password");
+            String firstName = rs.getString("first_name");
+            String lastName = rs.getString("last_name");
+            String email = rs.getString("email");
+            int age = rs.getInt("age");
+            String role = rs.getString("role");
+
+            User user = new User(un, pw, firstName, lastName, email, age, role);
+
+            return user;
+        } else { // we got 0 results
+            return null;
+        }
+    }
+
 }

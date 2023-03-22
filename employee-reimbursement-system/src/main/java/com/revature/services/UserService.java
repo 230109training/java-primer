@@ -1,9 +1,12 @@
 package com.revature.services;
 
 import com.revature.dao.UserDAO;
+import com.revature.exceptions.InvalidLoginException;
 import com.revature.exceptions.InvalidParameterException;
 import com.revature.exceptions.UsernameAlreadyTakenException;
 import com.revature.model.User;
+import com.revature.model.UserPayload;
+import com.revature.utility.JWTUtility;
 
 import java.sql.SQLException;
 
@@ -11,6 +14,22 @@ public class UserService {
 
     // Dependencies
     private UserDAO userDao = new UserDAO();
+
+    // return a JWT
+    public String login(String username, String password) throws SQLException, InvalidLoginException {
+        // Get User from database
+        // -> If user doesn't exist, throw exception
+        User user = userDao.getUserByUsernameAndPassword(username, password);
+
+        if (user == null) {
+            throw new InvalidLoginException("Invalid username and/or password");
+        }
+
+        // Generate JWT
+        UserPayload payload = new UserPayload(user.getUsername(), user.getRole());
+        String token = JWTUtility.createToken(payload);
+        return token;
+    }
 
     public void registerNewUser(User userToAdd) throws SQLException, InvalidParameterException, UsernameAlreadyTakenException {
         // Validating business logic goes here
