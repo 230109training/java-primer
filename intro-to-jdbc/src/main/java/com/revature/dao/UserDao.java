@@ -1,6 +1,7 @@
 package com.revature.dao;
 
 import com.revature.model.User;
+import com.revature.utility.ConnectionUtility;
 import org.postgresql.Driver;
 
 import java.sql.*;
@@ -10,16 +11,7 @@ import java.util.List;
 public class UserDao {
 
     public List<User> getAllUsers() throws SQLException {
-        // 1. Register the Postgres driver with JDBC
-        Driver postgresDriver = new Driver();
-
-        DriverManager.registerDriver(postgresDriver);
-
-        // 2. Create a Connection object
-        // url = connection string
-        // jdbc:postgresql://<host>:5432/<db name>
-        Connection con = DriverManager.getConnection("jdbc:postgresql://database-1.cifwcr7ybkhx.us-east-1.rds.amazonaws.com:5432/postgres",
-                "postgres", "password");
+        Connection con = ConnectionUtility.getConnection();
 
         // 3. Create a PreparedStatement object from the connection object's prepareStatement method
         PreparedStatement pstmt = con.prepareStatement("SELECT * FROM users");
@@ -48,13 +40,9 @@ public class UserDao {
     }
 
     public User getUserByUsernameAndPassword(String username, String password) throws SQLException {
-        Driver postgresDriver = new Driver();
+        Connection con = ConnectionUtility.getConnection();
 
-        DriverManager.registerDriver(postgresDriver);
-
-        Connection con = DriverManager.getConnection("jdbc:postgresql://database-1.cifwcr7ybkhx.us-east-1.rds.amazonaws.com:5432/postgres",
-                "postgres", "password");
-
+        // Avoids SQL injection
         PreparedStatement pstmt = con.prepareStatement("SELECT * FROM users u WHERE u.username = ? AND u.password = ?");
         pstmt.setString(1, username);
         pstmt.setString(2, password);
@@ -80,12 +68,7 @@ public class UserDao {
     }
 
     public void addUser(User user) throws SQLException {
-        Driver postgresDriver = new Driver();
-
-        DriverManager.registerDriver(postgresDriver);
-
-        Connection con = DriverManager.getConnection("jdbc:postgresql://database-1.cifwcr7ybkhx.us-east-1.rds.amazonaws.com:5432/postgres",
-                "postgres", "password");
+        Connection con = ConnectionUtility.getConnection();
 
         PreparedStatement pstmt = con.prepareStatement(
                 "INSERT INTO users (username, password, first_name, last_name, email, age)" +
@@ -98,7 +81,7 @@ public class UserDao {
         pstmt.setString(5, user.getEmail());
         pstmt.setInt(6, user.getAge());
 
-        int recordsInserted = pstmt.executeUpdate();
+        int recordsInserted = pstmt.executeUpdate(); // DML operations (INSERT, UPDATE, DELETE)
         System.out.println(recordsInserted); // should be 1
     }
 
