@@ -20,7 +20,7 @@ public interface GroceryItemDao extends JpaRepository<GroceryItem, Integer> {
 
     @Query("FROM GroceryItem g WHERE g.quantity < :amount")
     public abstract List<GroceryItem> findByQuantityLessThan(int amount);
-    
+
     public abstract List<GroceryItem> findByQuantityGreaterThan(int amount);
 
     @Query("FROM GroceryItem g WHERE g.quantity > :lower AND g.quantity < :higher")

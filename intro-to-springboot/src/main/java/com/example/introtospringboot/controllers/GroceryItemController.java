@@ -27,7 +27,7 @@ public class GroceryItemController {
         this.car = car;
     }
 
-    @RequestMapping(path = "/grocery-items", method = RequestMethod.POST)
+    @PostMapping(path = "/grocery-items")
     public ResponseEntity<MessageDTO> addGroceryItem(@RequestBody GroceryItem item) {
 
         System.out.println(car);
@@ -41,7 +41,7 @@ public class GroceryItemController {
 
     }
 
-    @RequestMapping(path = "/grocery-items", method = RequestMethod.GET)
+    @GetMapping(path = "/grocery-items")
     public ResponseEntity<List<GroceryItem>> getAllGroceryItems(@RequestParam(name = "quantityLessThan", required=false) String quantityLessThan) {
         if (quantityLessThan != null) {
             int intQuantityLessThan = Integer.parseInt(quantityLessThan);
